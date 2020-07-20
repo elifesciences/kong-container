@@ -39,4 +39,6 @@ RUN mkdir /var/log/kong && chown nobody:root /var/log/kong && chmod 755 /var/log
 COPY healthcheck.sh .
 HEALTHCHECK --interval=10s --timeout=5s --retries=3 CMD ./healthcheck.sh
 
+EXPOSE 8000
+
 CMD ["/usr/local/bin/kong", "start"]
