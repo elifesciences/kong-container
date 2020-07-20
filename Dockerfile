@@ -33,11 +33,16 @@ COPY kong.conf /etc/kong/kong.conf
 # custom-kong.conf renamed back to kong.conf
 RUN printf "* soft nofile 4096\n* hard nofile 4096\nroot soft nofile 4096\nroot hard nofile 4096\n" >> /etc/security/limits.conf
 
-RUN mkdir /var/log/kong && chown nobody:root /var/log/kong && chmod 755 /var/log/kong
+# make sure the logs dir exists and is writable
+#RUN mkdir -p /var/log/kong && chown www-data:root /var/log/kong && chmod 755 /var/log/kong
 
-# TODO: review this, copied straight from iiif
+# make 'kong' executable by the 'www-data' user
+#RUN chown -R www-data:root /usr/local/kong && chown www-data:root /usr/local/bin/kong && chmod -R g=u /usr/local/kong
+
 COPY healthcheck.sh .
 HEALTHCHECK --interval=10s --timeout=5s --retries=3 CMD ./healthcheck.sh
+
+#USER www-data
 
 EXPOSE 8000
 
