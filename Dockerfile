@@ -41,8 +41,8 @@ RUN printf "* soft nofile 4096\n* hard nofile 4096\nroot soft nofile 4096\nroot 
 # make 'kong' executable by the 'www-data' user
 #RUN chown -R www-data:root /usr/local/kong && chown www-data:root /usr/local/bin/kong && chmod -R g=u /usr/local/kong
 
-COPY --chmod=744 healthcheck.sh .
-RUN chmod +x healthcheck.sh
+COPY healthcheck.sh .
+RUN chmod 744 healthcheck.sh
 HEALTHCHECK --interval=10s --timeout=5s --retries=3 CMD ./healthcheck.sh
 
 #USER www-data
