@@ -18,8 +18,10 @@ RUN apt-get install -y --no-install-recommends \
 RUN apt-get install -y ca-certificates apt-transport-https
 
 # add KONG PPA
-RUN curl -L https://bintray.com/user/downloadSubjectPublicKey?username=bintray | apt-key add -
-RUN echo "deb https://kong.bintray.com/kong-community-edition-deb xenial main" >> /etc/apt/sources.list.d/kong.list
+#RUN curl -L https://bintray.com/user/downloadSubjectPublicKey?username=bintray | apt-key add -
+#RUN echo "deb https://kong.bintray.com/kong-community-edition-deb xenial main" >> /etc/apt/sources.list.d/kong.list
+# lsh@2023-01-20: added trusted=yes. no pubkey any more it seems...
+RUN echo "deb [trusted=yes] https://download.konghq.com/gateway-0.x-ubuntu-xenial default all" > /etc/apt/sources.list.d/kong.list
 
 RUN apt-get update 
 RUN apt-get install -y --no-install-recommends kong=0.10.4
@@ -40,7 +42,7 @@ RUN printf "* soft nofile 4096\n* hard nofile 4096\nroot soft nofile 4096\nroot 
 #RUN chown -R www-data:root /usr/local/kong && chown www-data:root /usr/local/bin/kong && chmod -R g=u /usr/local/kong
 
 COPY healthcheck.sh .
-RUN chmod +x healthcheck.sh
+RUN chmod 744 healthcheck.sh
 HEALTHCHECK --interval=10s --timeout=5s --retries=3 CMD ./healthcheck.sh
 
 #USER www-data
