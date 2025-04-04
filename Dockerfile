@@ -5,7 +5,7 @@ ENV HOME /root
 # No ncurses prompts
 ENV DEBIAN_FRONTEND noninteractive
 
-# Update packages and install tools 
+# Update packages and install tools
 RUN apt-get update -y --fix-missing
 RUN apt-get install -y --no-install-recommends \
     netcat-traditional \
@@ -23,8 +23,8 @@ RUN apt-get install -y ca-certificates apt-transport-https
 # lsh@2023-01-20: added trusted=yes. no pubkey any more it seems...
 RUN echo "deb [trusted=yes] https://download.konghq.com/gateway-0.x-ubuntu-xenial default all" > /etc/apt/sources.list.d/kong.list
 
-RUN apt-get update 
-RUN apt-get install -y --no-install-recommends kong=0.10.4
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends kong=0.11.2
 
 COPY nginx_kong.lua /usr/local/share/lua/5.1/kong/templates/nginx_kong.lua
 COPY kong.conf /etc/kong/kong.conf
